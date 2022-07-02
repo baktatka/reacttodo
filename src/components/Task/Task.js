@@ -32,7 +32,12 @@ export default class Task extends React.Component {
 
     return (
       <div className="view">
-        <input className="toggle" type="checkbox" onChange={onToggleDone} />
+        <input
+          className="toggle"
+          type="checkbox"
+          checked={done}
+          onChange={onToggleDone}
+        />
         <label>
           <span className={classNames}>{label}</span>
           <span className="created">{this.state.timeToNow}</span>
