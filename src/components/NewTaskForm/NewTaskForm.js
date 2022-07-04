@@ -21,7 +21,10 @@ export default class NewTaskForm extends React.Component {
   };
   onSubmit = (e) => {
     e.preventDefault();
-    this.props.onItemAdded(this.state.label);
+    if (this.state.label.trim() === "") alert("Введите корректное задание");
+    else {
+      this.props.onItemAdded(this.state.label);
+    }
     this.setState({
       label: "",
     });
