@@ -30,6 +30,7 @@ export default class NewTaskForm extends React.Component {
     return (
       <form onSubmit={this.onSubmit}>
         <input
+          required
           type="text"
           className="new-todo"
           placeholder="What needs to be done?"
