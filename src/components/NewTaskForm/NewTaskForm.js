@@ -21,6 +21,7 @@ export default class NewTaskForm extends React.Component {
   };
   onSubmit = (e) => {
     e.preventDefault();
+    console.log("hello");
     if (this.state.label.trim() === "") alert("Введите корректное задание");
     else {
       this.props.onItemAdded(this.state.label);
@@ -36,7 +37,7 @@ export default class NewTaskForm extends React.Component {
           required
           type="text"
           className="new-todo"
-          placeholder="What needs to be done?"
+          placeholder="Task"
           autoFocus
           onChange={this.onLabelChange}
           value={this.state.label}

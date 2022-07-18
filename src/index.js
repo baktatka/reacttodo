@@ -12,7 +12,7 @@ class App extends React.Component {
     todoData: [
       this.createTodoItem("Go shop"),
       this.createTodoItem("Go work"),
-      this.createTodoItem("Drink beer"),
+      this.createTodoItem("Go home"),
     ],
     filter: "all", //active,all,done
   };
