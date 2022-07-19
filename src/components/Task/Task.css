@@ -1,0 +1,12 @@
+.todo-list li label .title.done {
+  color: #cdcdcd;
+  text-decoration: line-through;
+}
+.todo-list li label .title {
+  word-break: break-all;
+  display: block;
+  line-height: 1.2;
+  transition: color 0.4s;
+  font-weight: 400;
+  color: #4d4d4d;
+}

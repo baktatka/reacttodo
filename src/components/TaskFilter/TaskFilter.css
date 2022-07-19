@@ -32,8 +32,3 @@
 .filters li button.selected {
   border-color: rgba(175, 47, 47, 0.2);
 }
-
-.todo-list li label .description.done {
-  color: #cdcdcd;
-  text-decoration: line-through;
-}
