@@ -1,79 +1,65 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import NewTaskForm from "../NewTaskForm";
 import TaskList from "../TaskList";
 import Footer from "../Footer";
 import "./App.css";
 
-export default class App extends Component {
-  maxId = 100;
-  state = {
-    todoData: [
-      this.createTodoItem("Go shop"),
-      this.createTodoItem("Go work"),
-      this.createTodoItem("Go home"),
-    ],
-    filter: "all", //active,all,done
-  };
-  createTodoItem(label) {
+const App = () => {
+  const createTodoItem = (label) => {
     return {
       label,
       done: false,
-      id: this.maxId++,
+      id: Math.random()
+        .toString(36)
+        .substring(2, 9),
     };
-  }
-
-  deleteItem = (id) => {
-    this.setState(({ todoData }) => {
-      const idx = todoData.findIndex((el) => el.id === id);
-      const newArr = [...todoData.slice(0, idx), ...todoData.slice(idx + 1)];
-      return {
-        todoData: newArr,
-      };
-    });
-  };
-  addItem = (text) => {
-    const newItem = this.createTodoItem(text);
-
-    this.setState(({ todoData }) => {
-      const newArr = [...todoData, newItem];
-      return {
-        todoData: newArr,
-      };
-    });
   };
 
-  onToggleDone = (id) => {
-    this.setState(({ todoData }) => {
-      const idx = todoData.findIndex((el) => el.id === id);
+  const [todoData, setTodoData] = useState([
+    createTodoItem("Go shoping"),
+    createTodoItem("Go work"),
+    createTodoItem("Go home"),
+  ]);
 
-      const oldItem = todoData[idx];
-      const newItem = { ...oldItem, done: !oldItem.done };
+  const [filter, setFilter] = useState("all"); //active,all,done
 
-      const newArr = [
-        ...todoData.slice(0, idx),
-        newItem,
-        ...todoData.slice(idx + 1),
-      ];
-      return {
-        todoData: newArr,
-      };
-    });
+  const deleteItem = (id) => {
+    const idx = todoData.findIndex((el) => el.id === id);
+    const newArr = [...todoData.slice(0, idx), ...todoData.slice(idx + 1)];
+    setTodoData(newArr);
   };
 
-  onFilterChange = (filter) => {
-    this.setState({ filter });
+  const addItem = (text) => {
+    const newItem = createTodoItem(text);
+    const newArr = [...todoData, newItem];
+
+    setTodoData(newArr);
   };
 
-  clearDone = () => {
-    this.setState(({ todoData }) => {
-      const newArr = todoData.filter((el) => !el.done);
-      return {
-        todoData: newArr,
-      };
-    });
+  const onToggleDone = (id) => {
+    const idx = todoData.findIndex((el) => el.id === id);
+
+    const oldItem = todoData[idx];
+    const newItem = { ...oldItem, done: !oldItem.done };
+
+    const newArr = [
+      ...todoData.slice(0, idx),
+      newItem,
+      ...todoData.slice(idx + 1),
+    ];
+    setTodoData(newArr);
   };
 
-  filter(items, filter) {
+  const onFilterChange = (filter) => {
+    setFilter(filter);
+  };
+
+  const clearDone = () => {
+    const newArr = todoData.filter((el) => !el.done);
+    setTodoData(newArr);
+  };
+
+  const filterView = (items, filter) => {
     switch (filter) {
       case "all":
         return items;
@@ -84,33 +70,32 @@ export default class App extends Component {
       default:
         return items;
     }
-  }
+  };
 
-  render() {
-    const { todoData, filter } = this.state;
-    const visibleItems = this.filter(todoData, filter);
-    const doneCount = todoData.filter((el) => !el.done).length;
+  const visibleItems = filterView(todoData, filter);
+  const doneCount = todoData.filter((el) => !el.done).length;
 
-    return (
-      <section className="todoapp">
-        <header className="header">
-          <h1>todos</h1>
-          <NewTaskForm onItemAdded={this.addItem} />
-        </header>
-        <section className="main">
-          <TaskList
-            todos={visibleItems}
-            onDeleted={this.deleteItem}
-            onToggleDone={this.onToggleDone}
-          />
-          <Footer
-            done={doneCount}
-            onClear={this.clearDone}
-            filter={filter}
-            onFilterChange={this.onFilterChange}
-          />
-        </section>
+  return (
+    <section className="todoapp">
+      <header className="header">
+        <h1>todos</h1>
+        <NewTaskForm onItemAdded={addItem} />
+      </header>
+      <section className="main">
+        <TaskList
+          todos={visibleItems}
+          onDeleted={deleteItem}
+          onToggleDone={onToggleDone}
+        />
+        <Footer
+          done={doneCount}
+          onClear={clearDone}
+          filter={filter}
+          onFilterChange={onFilterChange}
+        />
       </section>
-    );
-  }
-}
+    </section>
+  );
+};
+
+export default App;

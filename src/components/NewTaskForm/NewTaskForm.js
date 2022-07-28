@@ -1,48 +1,35 @@
-import React from "react";
+import React, { useState } from "react";
 import "./NewTaskForm.css";
-import PropTypes from "prop-types";
 
-export default class NewTaskForm extends React.Component {
-  static defaultProps = {
-    onItemAdded: () => {},
-  };
+const NewTaskForm = ({ onItemAdded }) => {
+  const [label, setLabel] = useState("");
 
-  static propTypes = {
-    onItemAdded: PropTypes.func,
+  const onLabelChange = (e) => {
+    setLabel(e.target.value);
   };
 
-  state = {
-    label: "",
-  };
-  onLabelChange = (e) => {
-    this.setState({
-      label: e.target.value,
-    });
-  };
-  onSubmit = (e) => {
+  const onSubmit = (e) => {
     e.preventDefault();
-    console.log("hello");
-    if (this.state.label.trim() === "") alert("Введите корректное задание");
+    if (label.trim() === "") alert("Введите корректное задание");
     else {
-      this.props.onItemAdded(this.state.label);
+      onItemAdded(label);
     }
-    this.setState({
-      label: "",
-    });
+    setLabel("");
   };
-  render() {
-    return (
-      <form onSubmit={this.onSubmit}>
-        <input
-          required
-          type="text"
-          className="new-todo"
-          placeholder="Task"
-          autoFocus
-          onChange={this.onLabelChange}
-          value={this.state.label}
-        />
-      </form>
-    );
-  }
-}
+
+  return (
+    <form onSubmit={onSubmit}>
+      <input
+        required
+        type="text"
+        className="new-todo"
+        placeholder="Task"
+        autoFocus
+        onChange={onLabelChange}
+        value={label}
+      />
+    </form>
+  );
+};
+
+export default NewTaskForm;
